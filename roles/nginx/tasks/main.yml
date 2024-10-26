@@ -1,0 +1,86 @@
+---
+
+- name: Install nginx
+  apt:
+    pkg: nginx
+    state: present
+    update_cache: true
+  notify:
+    - Start nginx
+  become: true
+
+- name: Add h5bp config
+  copy:
+    src: h5bp
+    dest: /etc/nginx/
+    owner: root
+    group: root
+  become: true
+  tags: long
+
+- name: Add nginx mime types
+  copy:
+    src: mime.types
+    dest: /etc/nginx/mime.types
+    owner: root
+    group: root
+  become: true
+
+- name: Add nginx config
+  copy:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+    validate: "nginx -t -c %s"
+  become: true
+  notify:
+    - Reload nginx
+
+- name: Disable default site
+  file:
+    dest: /etc/nginx/sites-enabled/default
+    state: absent
+  become: true
+
+- name: Remove default site
+  file:
+    dest: /etc/nginx/sites-available/default
+    state: absent
+  become: true
+
+- name: Remove default html file
+  file:
+    dest: /var/www/html/index.nginx-debian.html
+    state: absent
+  become: true
+
+- name: Copy site configs
+  template:
+    src: "{{ item }}"
+    dest: "/etc/nginx/sites-available/{{ item | basename | regex_replace('\\.j2','') }}"
+    owner: root
+    group: root
+    validate: bash -c 'echo "events { worker_connections 2; } http { include %s; }" > /etc/nginx/nginx-validate.conf; sudo nginx -T -c /etc/nginx/nginx-validate.conf; ec=$?; rm -f /etc/nginx/nginx-validate.conf; exit $ec'
+  with_fileglob:
+    - "templates/*.j2"
+  become: true
+  notify:
+    - Reload nginx
+
+- name: Find all sites on remote
+  find:
+    paths: /etc/nginx/sites-available
+  become: true
+  register: sites
+
+- name: Enable sites
+  file:
+    src: "{{ item.path }}"
+    dest: "/etc/nginx/sites-enabled/{{ item.path | basename }}"
+    state: link
+  with_items:
+    - "{{ sites.files }}"
+  become: true
+  notify:
+    - Reload nginx

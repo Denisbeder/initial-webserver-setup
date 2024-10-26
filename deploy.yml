@@ -1,0 +1,27 @@
+---
+
+- hosts: all
+  remote_user: "{{ user }}"
+
+  vars_files:
+    - vars/main.yml
+
+  tasks:
+    - block:
+      - include_tasks: tasks/register_release_variables.yml
+      - include_tasks: tasks/create_new_release_dir.yml
+      - include_tasks: tasks/clone_repo.yml
+      - include_tasks: tasks/mark_release.yml
+      - include_tasks: tasks/set_owner_and_group.yml dir_to_chown="{{ new_release_dir }}"
+      - include_tasks: tasks/set_correct_permissions.yml dir="{{ new_release_dir }}"
+      - include_tasks: tasks/check_that_folder_is_writable.yml dir_to_check="{{ new_release_dir }}/bootstrap/cache"
+      - include_tasks: tasks/link_storage.yml
+      - include_tasks: tasks/install_composer_deps.yml
+      - include_tasks: tasks/link_env.yml
+      - include_tasks: tasks/generate_assets.yml
+      - include_tasks: tasks/optimize_app.yml
+      - include_tasks: tasks/migrate_db.yml
+      - include_tasks: tasks/bless_new_release.yml
+      - include_tasks: tasks/leave_most_10_recent_releases.yml
+      rescue:
+        - include_tasks: tasks/rollback.yml

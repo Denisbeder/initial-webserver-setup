@@ -1,0 +1,47 @@
+---
+
+- hosts: all
+  gather_facts: False
+  remote_user: root
+
+  vars_files:
+    - vars/main.yml
+
+  roles:
+    - name: user
+      remote_user: "{{ test_user | ternary(omit, 'root') }}"
+      tags: user
+      when: inventory_hostname not in groups['excluded_hosts']
+
+    - name: ssh
+      remote_user: "{{ user }}"
+      tags: ssh
+      when: inventory_hostname not in groups['excluded_hosts']
+
+  pre_tasks:
+    - name: Check if user specified in config is installed
+      local_action: "command ssh -q -o BatchMode=yes -o ConnectTimeout=3 {{ inventory_hostname }} 'echo ok'"
+      register: test_user
+      ignore_errors: true
+      changed_when: false
+      when: inventory_hostname not in groups['excluded_hosts']
+
+    - name: Install python3
+      remote_user: "{{ test_user | ternary(omit, 'root') }}"
+      raw: sudo apt install -y python3
+      become: true
+
+    - name: Install aptitude
+      remote_user: "{{ test_user | ternary(omit, 'root') }}"
+      apt:
+        name: aptitude
+        state: present
+      become: true
+
+    - name: Update all packages
+      remote_user: "{{ test_user | ternary(omit, 'root') }}"
+      apt:
+        update_cache: yes
+        upgrade: safe
+        autoremove: yes
+      become: true

@@ -1,0 +1,17 @@
+---
+
+- name: Start nginx
+  service:
+    name: nginx
+    state: started
+  become: true
+
+- name: Reload nginx
+  service:
+    name: nginx
+    state: reloaded
+  become: true
+
+- name: Test nginx
+  command: nginx -t
+  become: true
