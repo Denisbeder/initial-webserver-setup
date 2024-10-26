@@ -159,5 +159,5 @@ If you discover any security related issues, please email amelihovv@ya.ru instea
 
 ## Credits
 
-- [Alexander Melihov](https://github.com/melihovv)
+- [Alexander Melihov](https://github.com/melihovv/initial-webserver-setup)
 - [All contributors](https://github.com/melihovv/initial-webserver-setup/graphs/contributors)
