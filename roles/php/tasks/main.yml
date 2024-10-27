@@ -16,13 +16,12 @@
       state: present
       update_cache: yes
   with_items:
-    - php{{ php_version }}
     - php{{ php_version }}-dev
-    - php{{ php_version }}-pear
     - php{{ php_version }}-cli
     - php{{ php_version }}-fpm
     - php{{ php_version }}-curl
     - php{{ php_version }}-gd
+    - php{{ php_version }}-imagick
     - php{{ php_version }}-imap
     - php{{ php_version }}-intl
     - php{{ php_version }}-mbstring
@@ -36,13 +35,11 @@
     - php{{ php_version }}-tokenizer
     - php{{ php_version }}-opcache
     - php{{ php_version }}-redis
+    - php{{ php_version }}-apcu
     - composer
   notify:
     - Start php-fpm
   become: true
-
-- name: Install APCu using PECL
-  command: pecl install apcu
 
 # Configure PHP.
 - include_tasks: configure.yml
