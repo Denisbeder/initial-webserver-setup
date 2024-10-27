@@ -16,7 +16,6 @@
       state: present
       update_cache: yes
   with_items:
-    - php{{ php_version }}-dev
     - php{{ php_version }}-cli
     - php{{ php_version }}-fpm
     - php{{ php_version }}-curl
