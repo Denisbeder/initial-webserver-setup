@@ -1,5 +1,4 @@
 /.idea
-/inventory
 /vars/main.yml
 *.retry
 *.log
