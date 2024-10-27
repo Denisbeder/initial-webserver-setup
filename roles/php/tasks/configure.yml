@@ -1,0 +1,12 @@
+---
+
+- name: Place PHP configuration file in place.
+  ansible.builtin.template:
+    src: php.ini.j2
+    dest: "{{ item }}/php.ini"
+    owner: root
+    group: root
+    mode: 0644
+  with_items: "{{ php_conf_paths }}"
+  notify: Restart php-fpm
+  when: php_use_managed_ini
