@@ -5,7 +5,7 @@ zero time.
 
 ## What initial-setup.yml playbook does
 
-- install python2 and aptitude
+- install python3 and aptitude
 - upgrade all software
 - create user with sudo rights
 - configure sshd: disables root login and password authentication, also allows
@@ -77,12 +77,6 @@ server in this file.
 ```
 [web]
 46.101.210.137
-```
-
-### Install dependencies
-
-```bash
-ansible-galaxy install -r requirements.yml
 ```
 
 ### Environment variables
