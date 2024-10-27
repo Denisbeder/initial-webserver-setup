@@ -127,8 +127,9 @@ php_fpm_pm_max_children: 50
 php_fpm_pm_start_servers: 5
 php_fpm_pm_min_spare_servers: 5
 php_fpm_pm_max_spare_servers: 5
-php_fpm_pm_max_requests: 0
+php_fpm_pm_max_requests: 200
 php_fpm_pm_status_path: ""
+php_process_idle_timeout: "2s"
 
 # If this is set to false, none of the following options will have any effect.
 # Any and all changes to /etc/php.ini will be your responsibility.
@@ -146,7 +147,7 @@ php_upload_max_filesize: "64M"
 php_max_file_uploads: "20"
 
 php_post_max_size: "32M"
-php_date_timezone: "America/Chicago"
+php_date_timezone: "UTC"
 php_allow_url_fopen: "On"
 
 php_sendmail_path: "/usr/sbin/sendmail -t -i"
@@ -173,7 +174,7 @@ php_fpm_pools:
     pool_template: www.conf.j2
     pool_listen: "{{ php_fpm_listen }}"
     pool_listen_allowed_clients: "{{ php_fpm_listen_allowed_clients }}"
-    pool_pm: dynamic
+    pool_pm: ondemand
     pool_pm_max_children: "{{ php_fpm_pm_max_children }}"
     pool_pm_start_servers: "{{ php_fpm_pm_start_servers }}"
     pool_pm_min_spare_servers: "{{ php_fpm_pm_min_spare_servers }}"
