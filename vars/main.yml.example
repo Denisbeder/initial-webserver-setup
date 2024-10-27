@@ -61,9 +61,6 @@ certbot_extra_args: --standalone --no-eff-email -n --agree-tos --keep --expand  
 # What to do after certificate was refreshed?
 renew_hook: systemctl reload nginx
 
-# Swap file size (see https://github.com/kamaln7/ansible-swapfile)
-swapfile_size: 1GB
-
 # Which npm packages install globally
 # For more info about available variables see https://github.com/geerlingguy/ansible-role-nodejs
 nodejs_npm_global_packages:
