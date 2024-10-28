@@ -44,6 +44,10 @@
       tags: mysql
       become: true
 
+    - name: redis
+      tags: redis
+      become: true
+
   tasks:
     - include_tasks: tasks/setup_deploy_folder_structure.yml
       tags: setup_deploy
