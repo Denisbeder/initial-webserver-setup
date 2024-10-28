@@ -1,5 +1,10 @@
 ---
 
+- name: Set the base directory to safe in Git
+  command: >
+    git config --global --add safe.directory {{ new_release_dir }}
+  become: yes
+
 - name: Clone repo
   git:
     dest: "{{ new_release_dir }}"
