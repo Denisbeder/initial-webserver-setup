@@ -44,18 +44,18 @@ mysql_root_username: root
 mysql_root_password: root
 
 # Databases to create in mysql.
-mysql_databases: []
-#   - name: example
-#     collation: utf8mb4_unicode_ci
-#     encoding: utf8mb4
-#     replicate: 1
+mysql_databases:
+  - name: site
+    collation: utf8mb4_unicode_ci
+    encoding: utf8mb4
+    #replicate: 1
 
 # Users to create in mysql.
-mysql_users: []
-#   - name: example
-#     host: 127.0.0.1
-#     password: secret
-#     priv: *.*:USAGE
+mysql_users:
+  - name: site_user
+    host: 127.0.0.1
+    password: secret
+    priv: "*.*:USAGE"
 
 # Set up PHP version
 php_version: 7.4
