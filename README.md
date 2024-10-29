@@ -30,35 +30,8 @@ to login only user created on previous step
 - install nginx
 - install php and composer
 - install mysql
-- creates following folders structure for zero time deployment:
-  - `/path/to/domain`
-    - `current` -> `/link/to/latest/release`
-    - `persistent`
-      - `storage`
-    - `releases`
-      - `2017-08-10-10-00-00`
-      - `2017-08-11-10-00-00`
-      - `2017-08-12-10-00-00`
-
-## What deploy.yml playbook does
-
-- clone repository
-- set correct permissions
-- link `/path/to/release/storage` to `/path/to/domain/persistent/storage`
-- install composer dependencies
-- link `/path/to/release/.env` to `/path/to/domain/persistent/.env`
-- install npm dependencies and generate assets
-- optimize laravel application
-- backup database
-- run new migrations
-- link `/path/to/domain/current` to `/path/to/domain/releases/new-release`
-- delete all, but 10 latest releases
-
-If build fails
-
-- rollback migrations
-- remove new release folder
-- link `/path/to/domain/current` to `/path/to/domain/releases/last-success-release`
+- creates following folders structure
+  - `/var/www/domain.com`:
 
 ## Install
 
@@ -139,12 +112,6 @@ ansible-playbook setup.yml --tags=user,nginx
 
 ```bash
 ansible-playbook setup.yml --skip-tags=user,nginx
-```
-
-### Deploy
-
-```bash
-ansible-playbook deploy.yml
 ```
 
 ## Security

@@ -1,53 +1,170 @@
 ---
 
-- hosts: all
-  remote_user: "{{ user }}"
+# Name of user which will be created on server
+user: devops
 
-  vars_files:
-    - vars/main.yml
+# User password
+password: 111
 
-  roles:
-    - name: essentials
-      tags: essentials
+# Public key to copy to remote server
+public_key: ~/.ssh/id_rsa.pub
 
-    - name: timezone
-      tags: timezone
+# Email to which letsencrypt will send notifications
+email: example@example.com
 
-    - name: iptables
-      tags: iptables
+# Timezone to set on server
+timezone: 'America/Campo_Grande'
 
-    - name: fail2ban
-      tags: fail2ban
-      when: inventory_hostname not in groups['excluded_hosts']
+# Domain of your site
+domain: example.com
 
-    - name: certbot
-      tags: ssl
-      when: inventory_hostname not in groups['excluded_hosts']
+# Where site will be located
+domain_path: "/var/www/{{ domain }}"
 
-    - name: ssl
-      tags: ssl
-      when: inventory_hostname not in groups['excluded_hosts']
+# Extra args passed to certbot for certificate generation. Remove `--test-cert`
+# if you don't want to use staging server to obtain sertificate. For more info
+# about these args see https://certbot.eff.org/docs/using.html#certbot-command-line-options
+certbot_extra_args: --standalone --no-eff-email -n --agree-tos --keep --expand  --preferred-challenges tls-sni --test-cert
 
-    - name: geerlingguy.nodejs
-      tags: nodejs
-      become: true
+# What to do after certificate was refreshed?
+renew_hook: systemctl reload nginx
 
-    - name: nginx
-      tags: nginx
-      become: true
+# Which npm packages install globally
+# For more info about available variables see https://github.com/geerlingguy/ansible-role-nodejs
+nodejs_npm_global_packages:
+  - name: yarn
 
-    - name: php
-      tags: php
-      become: true
+# Mysql user name and password
+# More info at https://github.com/geerlingguy/ansible-role-mysql
+mysql_user_name: root
+mysql_user_password: root
 
-    - name: mysql
-      tags: mysql
-      become: true
+# Mysql root user name and password
+mysql_root_username: root
+mysql_root_password: root
 
-    - name: redis
-      tags: redis
-      become: true
+# Databases to create in mysql.
+mysql_databases: []
+#   - name: example
+#     collation: utf8mb4_unicode_ci
+#     encoding: utf8mb4
+#     replicate: 1
 
-  tasks:
-    - include_tasks: tasks/setup_deploy_folder_structure.yml
-      tags: setup_deploy
+# Users to create in mysql.
+mysql_users: []
+#   - name: example
+#     host: 127.0.0.1
+#     password: secret
+#     priv: *.*:USAGE
+
+# Set up PHP version
+php_version: 7.4
+
+php_fpm_daemon: "php{{ php_version }}-fpm"
+
+php_fpm_conf_path: "/etc/php/{{ php_version }}/fpm"
+php_fpm_pool_conf_path: "{{ php_fpm_conf_path }}/pool.d/www.conf"
+
+# OpCache settings.
+php_opcache_zend_extension: "opcache.so"
+php_opcache_enable: "1"
+php_opcache_enable_cli: "0"
+php_opcache_memory_consumption: "96"
+php_opcache_interned_strings_buffer: "16"
+php_opcache_max_accelerated_files: "4096"
+php_opcache_max_wasted_percentage: "5"
+php_opcache_validate_timestamps: "1"
+php_opcache_revalidate_path: "0"
+php_opcache_revalidate_freq: "2"
+php_opcache_max_file_size: "0"
+php_opcache_blacklist_filename: ""
+
+# APCu settings.
+php_enable_apc: true
+php_apc_shm_size: "96M"
+php_apc_enable_cli: "0"
+
+# PHP-FPM configuration.
+php_enable_php_fpm: true
+php_fpm_state: started
+php_fpm_handler_state: restarted
+php_fpm_enabled_on_boot: true
+php_fpm_listen: "127.0.0.1:9000"
+php_fpm_listen_allowed_clients: "127.0.0.1"
+php_fpm_pm_max_children: 5
+php_fpm_pm_start_servers: 5
+php_fpm_pm_min_spare_servers: 5
+php_fpm_pm_max_spare_servers: 5
+php_fpm_pm_max_requests: 200
+php_fpm_pm_status_path: ""
+php_process_idle_timeout: "2s"
+
+# If this is set to false, none of the following options will have any effect.
+# Any and all changes to /etc/php.ini will be your responsibility.
+php_use_managed_ini: true
+
+php_expose_php: "On"
+php_memory_limit: "256M"
+php_max_execution_time: "60"
+php_max_input_time: "60"
+php_max_input_vars: "1000"
+php_realpath_cache_size: "32K"
+
+php_file_uploads: "On"
+php_upload_max_filesize: "100M"
+php_max_file_uploads: "20"
+
+php_post_max_size: "50M"
+php_date_timezone: "UTC"
+php_allow_url_fopen: "On"
+
+php_sendmail_path: "/usr/sbin/sendmail -t -i"
+php_output_buffering: "4096"
+php_short_open_tag: "Off"
+php_disable_functions: []
+php_precision: 14
+php_serialize_precision: "-1"
+
+php_session_cookie_lifetime: 0
+php_session_gc_probability: 1
+php_session_gc_divisor: 1000
+php_session_gc_maxlifetime: 1440
+php_session_save_handler: files
+php_session_save_path: ''
+
+php_error_reporting: "E_ALL & ~E_DEPRECATED & ~E_STRICT"
+php_display_errors: "Off"
+php_display_startup_errors: "Off"
+
+# PHP-FPM pool configuration.
+php_fpm_pools:
+  - pool_name: www
+    pool_template: www.conf.j2
+    pool_listen: "{{ php_fpm_listen }}"
+    pool_listen_allowed_clients: "{{ php_fpm_listen_allowed_clients }}"
+    pool_pm: ondemand
+    pool_pm_max_children: "{{ php_fpm_pm_max_children }}"
+    pool_pm_start_servers: "{{ php_fpm_pm_start_servers }}"
+    pool_pm_min_spare_servers: "{{ php_fpm_pm_min_spare_servers }}"
+    pool_pm_max_spare_servers: "{{ php_fpm_pm_max_spare_servers }}"
+    pool_pm_max_requests: "{{ php_fpm_pm_max_requests }}"
+    pool_pm_status_path: "{{ php_fpm_pm_status_path }}"
+
+php_apc_conf_filename: 20-apcu.ini
+php_opcache_conf_filename: 10-opcache.ini
+
+# Vendor-specific configuration paths on Debian/Ubuntu make my brain asplode.
+php_conf_paths:
+  - /etc/php/{{ php_version }}/fpm
+  - /etc/php/{{ php_version }}/cli
+
+php_extension_conf_paths:
+  - /etc/php/{{ php_version }}/fpm/conf.d
+  - /etc/php/{{ php_version }}/cli/conf.d
+
+php_fpm_pool_user: www-data
+php_fpm_pool_group: www-data
+
+# Deploy configuration.
+laravel_root_dir: /var/www/example.com
+laravel_repo: https://github.com/melihovv/laravel-starter-kit.git

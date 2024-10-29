@@ -1,8 +1,0 @@
----
-
-- name: Set new release as current
-  file:
-    src: "{{ new_release_dir }}"
-    dest: "{{ current_dir }}"
-    state: link
-    force: true
