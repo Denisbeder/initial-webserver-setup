@@ -170,7 +170,3 @@ php_extension_conf_paths:
 
 php_fpm_pool_user: www-data
 php_fpm_pool_group: www-data
-
-# Deploy configuration.
-laravel_root_dir: /var/www/example.com
-laravel_repo: https://github.com/melihovv/laravel-starter-kit.git
