@@ -1,0 +1,72 @@
+---
+- name: Ensure dependencies are present.
+  apt:
+    name:
+      - apt-transport-https
+      - python3-debian
+      - gnupg2
+    state: present
+
+- name: Download NodeSource's signing key.
+  # NodeSource's web server discriminates the User-Agent used by the deb822_repository module.
+  # https://github.com/nodesource/distributions/issues/1723
+  get_url:
+    url: https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key
+    dest: /etc/apt/signing-key-nodesource-repo.asc
+    owner: root
+    group: root
+    mode: '0444'
+  register: node_signing_key
+
+- name: Add NodeSource repositories for Node.js.
+  deb822_repository:
+    name: nodesource_{{ nodejs_version }}
+    uris: "https://deb.nodesource.com/node_{{ nodejs_version }}"
+    types: deb
+    suites: nodistro
+    components: main
+    signed_by: "{{ node_signing_key.dest }}"
+    state: present
+  register: node_repo
+
+- name: Update apt cache if repo was added.
+  apt: update_cache=yes
+  when: node_repo is changed
+  tags: ['skip_ansible_lint']
+
+- name: Ensure Node.js and npm are installed.
+  apt:
+    name: "nodejs={{ nodejs_version | regex_replace('x', '') }}*"
+    state: present
+
+- name: Define nodejs_install_npm_user
+  set_fact:
+    nodejs_install_npm_user: "{{ ansible_user | default(lookup('env', 'USER')) }}"
+  when: nodejs_install_npm_user is not defined
+
+- name: Create npm global directory
+  file:
+    path: "{{ npm_config_prefix }}"
+    owner: "{{ nodejs_install_npm_user }}"
+    group: "{{ nodejs_install_npm_user }}"
+    state: directory
+    mode: 0755
+
+- name: Add npm_config_prefix bin directory to global $PATH.
+  template:
+    src: npm.sh.j2
+    dest: /etc/profile.d/npm.sh
+    mode: 0644
+  when: nodejs_generate_etc_profile
+
+- name: Ensure npm global packages are installed.
+  npm:
+    name: "{{ item.name | default(item) }}"
+    version: "{{ item.version | default(omit) }}"
+    global: true
+    state: "{{ item.state | default('present') }}"
+  environment:
+    NPM_CONFIG_PREFIX: "{{ npm_config_prefix }}"
+    NODE_PATH: "{{ npm_config_prefix }}/lib/node_modules"
+    NPM_CONFIG_UNSAFE_PERM: "{{ npm_config_unsafe_perm }}"
+  with_items: "{{ nodejs_npm_global_packages }}"

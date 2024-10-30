@@ -1,5 +1,3 @@
-[local]
+[servers]
 localhost ansible_connection=local
-
-[excluded_hosts]
-localhost
+2001:19f0:9000:2c97:5400:05ff:fe25:f696

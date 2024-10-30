@@ -3,8 +3,8 @@
 # Name of user which will be created on server
 user: devops
 
-# User password
-password: 111
+# User password "5>X0vE1h"
+password: $6$PBujVyh.sHhSkkYl$6TkCt/JJX6fWCyerRsBv8wrH1TQ/KoiOWCg3l172uAxxr5N4qEywYoHmv6v/q2R3vb/KAo9x9PLtfltby0Ljk0
 
 # Public key to copy to remote server
 public_key: ~/.ssh/id_rsa.pub
@@ -21,6 +21,9 @@ domain: example.com
 # Where site will be located
 domain_path: "/var/www/{{ domain }}"
 
+configure_certbot: false
+configure_ssl: false
+
 # Extra args passed to certbot for certificate generation. Remove `--test-cert`
 # if you don't want to use staging server to obtain sertificate. For more info
 # about these args see https://certbot.eff.org/docs/using.html#certbot-command-line-options
@@ -29,10 +32,13 @@ certbot_extra_args: --standalone --no-eff-email -n --agree-tos --keep --expand  
 # What to do after certificate was refreshed?
 renew_hook: systemctl reload nginx
 
+# Which nodejs version to install
+nodejs_version: "22.x"
+
 # Which npm packages install globally
 # For more info about available variables see https://github.com/geerlingguy/ansible-role-nodejs
-nodejs_npm_global_packages:
-  - name: yarn
+#nodejs_npm_global_packages:
+#  - name: yarn
 
 # Mysql user name and password
 # More info at https://github.com/geerlingguy/ansible-role-mysql

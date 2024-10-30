@@ -18,17 +18,17 @@
 
     - name: fail2ban
       tags: fail2ban
-      when: inventory_hostname not in groups['excluded_hosts']
+      when: inventory_hostname != 'localhost'
 
     - name: certbot
       tags: ssl
-      when: inventory_hostname not in groups['excluded_hosts']
+      when: inventory_hostname != 'localhost' and configure_certbot
 
     - name: ssl
       tags: ssl
-      when: inventory_hostname not in groups['excluded_hosts']
+      when: inventory_hostname != 'localhost' and configure_ssl
 
-    - name: geerlingguy.nodejs
+    - name: nodejs
       tags: nodejs
       become: true
 

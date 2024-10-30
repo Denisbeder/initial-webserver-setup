@@ -6,7 +6,6 @@
     state: latest
     update_cache: true
     cache_valid_time: 3600
-  become: true
 
 - name: Disable root login
   lineinfile:
@@ -16,6 +15,13 @@
     state: present
   become: true
   notify: Restart ssh
+
+#- name: Disable password authentication for root
+#  lineinfile:
+#    path: /etc/ssh/sshd_config
+#    state: present
+#    regexp: '^#?PermitRootLogin'
+#    line: 'PermitRootLogin prohibit-password'
 
 - name: Disable password authentication
   lineinfile:

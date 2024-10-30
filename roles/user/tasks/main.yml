@@ -1,30 +1,27 @@
 ---
 
-- name: Ensure sudo group is present
+- name: Make sure we have a 'wheel' group
   group:
-    name: sudo
+    name: wheel
     state: present
-  become: true
 
-- name: Ensure sudo group has sudo privileges
+- name: Allow 'wheel' group to have passwordless sudo
   lineinfile:
-    dest: /etc/sudoers
+    path: /etc/sudoers
     state: present
-    regexp: "^%sudo"
-    line: "%sudo ALL=(ALL:ALL) ALL"
-    validate: "visudo -cf %s"
-  become: true
+    regexp: '^%wheel'
+    line: '%wheel ALL=(ALL) NOPASSWD: ALL'
+    validate: '/usr/sbin/visudo -cf %s'
 
-- name: Add new super user
+- name: Create a new regular user with sudo privileges
   user:
     name: "{{ user }}"
-    password: "{{ password }}"
-    groups: sudo
-    append: yes
+    #password: "{{ password }}"
     state: present
+    groups: wheel
+    append: true
+    create_home: true
     shell: /bin/bash
-    update_password: always
-  become: true
 
 - name: Add ssh key for new super user
   authorized_key:
