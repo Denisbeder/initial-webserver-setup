@@ -7,7 +7,7 @@ user: devops
 password: $6$PBujVyh.sHhSkkYl$6TkCt/JJX6fWCyerRsBv8wrH1TQ/KoiOWCg3l172uAxxr5N4qEywYoHmv6v/q2R3vb/KAo9x9PLtfltby0Ljk0
 
 # Public key to copy to remote server
-public_key: ~/.ssh/id_rsa.pub
+public_key: ~/.ssh/id_ed25519.pub
 
 # Email to which letsencrypt will send notifications
 email: example@example.com
@@ -20,6 +20,9 @@ domain: example.com
 
 # Where site will be located
 domain_path: "/var/www/{{ domain }}"
+
+# Define nginx config file
+nginx_config: "site_page_cache.j2"
 
 configure_certbot: false
 configure_ssl: false
@@ -59,9 +62,9 @@ mysql_databases:
 # Users to create in mysql.
 mysql_users:
   - name: site_user
-    host: 127.0.0.1
+    host: localhost
     password: secret
-    priv: "*.*:USAGE"
+    priv: "site.*:ALL"
 
 # Set up PHP version
 php_version: 7.4

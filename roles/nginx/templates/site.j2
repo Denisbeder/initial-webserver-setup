@@ -8,7 +8,7 @@ server {
       #listen 443 deferred ssl;
       listen 80 deferred;
 
-      root /var/www/{{ domain }}/current/public;
+      root /var/www/{{ domain }}/public;
       server_name {{ domain }};
       index index.php;
 
@@ -23,6 +23,12 @@ server {
       #ssl_trusted_certificate   /etc/letsencrypt/live/{{ domain }}/fullchain.pem;
       #ssl_certificate_key       /etc/letsencrypt/live/{{ domain }}/privkey.pem;
       #include h5bp/directive-only/ssl.conf;
+
+      client_max_body_size 100M;
+      large_client_header_buffers 16 512k;
+      fastcgi_busy_buffers_size 512k;
+      fastcgi_buffer_size 512k;
+      fastcgi_buffers 16 512k;
 
       location / {
           try_files $uri $uri/ /index.php$is_args$args;

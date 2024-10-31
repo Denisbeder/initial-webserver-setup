@@ -57,13 +57,11 @@
 
 - name: Copy site configs
   template:
-    src: "{{ item }}"
-    dest: "/etc/nginx/sites-available/{{ item | basename | regex_replace('\\.j2','') }}"
+    src: "{{ nginx_config }}"
+    dest: "/etc/nginx/sites-available/{{ domain }}"
     owner: root
     group: root
     validate: bash -c 'echo "events { worker_connections 2; } http { include %s; }" > /etc/nginx/nginx-validate.conf; sudo nginx -T -c /etc/nginx/nginx-validate.conf; ec=$?; rm -f /etc/nginx/nginx-validate.conf; exit $ec'
-  with_fileglob:
-    - "templates/*.j2"
   become: true
   notify:
     - Reload nginx
