@@ -4,6 +4,7 @@
   group:
     name: wheel
     state: present
+  become: true
 
 - name: Allow 'wheel' group to have passwordless sudo
   lineinfile:
@@ -12,6 +13,7 @@
     regexp: '^%wheel'
     line: '%wheel ALL=(ALL) NOPASSWD: ALL'
     validate: '/usr/sbin/visudo -cf %s'
+  become: true
 
 - name: Create a new regular user with sudo privileges
   user:
@@ -22,6 +24,7 @@
     append: true
     create_home: true
     shell: /bin/bash
+  become: true
 
 - name: Add ssh key for new super user
   authorized_key:

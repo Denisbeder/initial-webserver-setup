@@ -10,7 +10,6 @@
   roles:
     - name: user
       tags: user
-      when: inventory_hostname != 'localhost'
 
     - name: ssh
       remote_user: "{{ user }}"
