@@ -41,6 +41,9 @@
       tags: php
       become: true
 
+    - name: composer
+      tags: composer
+
     - name: mysql
       tags: mysql
       become: true

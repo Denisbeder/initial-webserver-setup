@@ -35,7 +35,6 @@
     - php{{ php_version }}-opcache
     - php{{ php_version }}-redis
     - php{{ php_version }}-apcu
-    - composer
   notify:
     - Start php-fpm
   become: true
