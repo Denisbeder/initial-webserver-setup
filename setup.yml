@@ -15,6 +15,7 @@
 
     - name: iptables
       tags: iptables
+      when: inventory_hostname != 'localhost'
 
     - name: fail2ban
       tags: fail2ban
