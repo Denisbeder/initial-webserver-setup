@@ -21,6 +21,12 @@
       raw: sudo apt install -y python3
       become: true
 
+    - name: Install Language Pack PT
+      apt:
+        name: language-pack-pt-base
+        state: present
+      become: true
+
     - name: Install aptitude
       apt:
         name: aptitude
