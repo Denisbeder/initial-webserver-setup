@@ -22,9 +22,7 @@
       become: true
 
     - name: Install Language Pack PT
-      apt:
-        name: language-pack-pt-base
-        state: present
+      raw: sudo apt install -y language-pack-pt-base
       become: true
 
     - name: Install aptitude
