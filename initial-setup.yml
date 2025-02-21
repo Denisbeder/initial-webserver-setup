@@ -21,10 +21,6 @@
       raw: sudo apt install -y python3
       become: true
 
-    - name: Install Language Pack PT
-      raw: sudo apt install -y language-pack-pt-base
-      become: true
-
     - name: Install aptitude
       apt:
         name: aptitude
@@ -36,4 +32,8 @@
         update_cache: yes
         upgrade: safe
         autoremove: yes
+      become: true
+
+    - name: Install Language Pack PT
+      raw: sudo apt install -y language-pack-pt-base
       become: true

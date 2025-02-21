@@ -1,0 +1,21 @@
+---
+
+- name: Install supervisor
+  apt:
+    name: "supervisor"
+    update_cache: yes
+
+- name: supervisor.j2
+  template:
+    src: supervisor.j2
+    dest: "/etc/supervisor/conf.d/{{ domain.split('.')[0] | lower }}_queue_worker_default.conf"
+    mode: 0644
+
+- name: supervisorctl reread
+  shell: supervisorctl reread
+
+- name: supervisorctl update
+  shell: supervisorctl update
+
+#- name: supervisorctl restart all
+#  shell: supervisorctl restart all

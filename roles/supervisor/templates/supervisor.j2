@@ -1,0 +1,14 @@
+[program:{{ domain.split(".")[0] | lower }}_queue_worker_default]
+process_name=%(program_name)s_%(process_num)02d
+command=/usr/bin/php {{ domain_path }}/artisan queue:work --queue=default --tries=3 --timeout=120
+stderr_logfile=/var/log/supervisor/{{ domain }}.log
+autostart=true
+autorestart=true
+stopasgroup=true
+killasgroup=true
+numprocs=4
+redirect_stderr=true
+stopwaitsecs=3600
+process_num=1
+startretries=3
+stopsignal=QUIT

@@ -37,7 +37,7 @@
       tags: nginx
       become: true
 
-    - name: UFW
+    - name: ufw
       tags: ufw
       become: true
 
@@ -54,6 +54,14 @@
 
     - name: redis
       tags: redis
+      become: true
+
+    - name: supervisor
+      tags: supervisor
+      become: true
+
+    - name: cron
+      tags: cron
       become: true
 
   tasks:
