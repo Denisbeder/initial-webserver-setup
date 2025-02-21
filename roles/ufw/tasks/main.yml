@@ -1,0 +1,17 @@
+---
+
+- name: Installing UFW
+  apt:
+    name: ufw
+    update_cache: yes
+    state: latest
+  become: true
+
+- name: Enable UFW
+  ufw: direction=incoming policy=deny state=enabled
+
+- name: UFW limit SSH
+  ufw: rule=limit port=ssh
+
+- name: UFW open HTTP
+  ufw: rule=allow port=http

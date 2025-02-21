@@ -37,6 +37,10 @@
       tags: nginx
       become: true
 
+    - name: UFW
+      tags: ufw
+      become: true
+
     - name: php
       tags: php
       become: true
