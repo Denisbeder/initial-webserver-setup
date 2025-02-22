@@ -56,14 +56,6 @@
       tags: redis
       become: true
 
-    - name: supervisor
-      tags: supervisor
-      become: true
-
-    - name: cron
-      tags: cron
-      become: true
-
   tasks:
     - name: Create base directory
       file:
