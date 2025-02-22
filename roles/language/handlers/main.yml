@@ -1,0 +1,4 @@
+---
+
+- name: Update locale
+  command: update-locale LANG=pt_BR.UTF-8

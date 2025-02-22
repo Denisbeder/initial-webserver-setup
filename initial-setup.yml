@@ -16,6 +16,9 @@
       tags: ssh
       when: inventory_hostname != 'localhost'
 
+    - name: language
+      tags: language
+
   pre_tasks:
     - name: Install python3
       raw: sudo apt install -y python3
@@ -32,8 +35,4 @@
         update_cache: yes
         upgrade: safe
         autoremove: yes
-      become: true
-
-    - name: Install Language Pack PT
-      raw: sudo apt install -y language-pack-pt-base
       become: true

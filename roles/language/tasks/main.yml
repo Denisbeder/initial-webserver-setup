@@ -1,0 +1,19 @@
+---
+
+- name: Install locales
+  apt:
+    name: locales
+    state: present
+
+- name: Generate locale pt_BR.UTF-8
+  command: locale-gen pt_BR.UTF-8
+  args:
+    creates: /usr/lib/locale/pt_BR.utf8
+
+- name: Set default locale to pt_BR.UTF-8
+  lineinfile:
+    path: /etc/default/locale
+    line: 'LANG=pt_BR.UTF-8'
+    create: yes
+  notify: Update locale
+
