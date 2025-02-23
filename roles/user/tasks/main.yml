@@ -26,6 +26,12 @@
     shell: /bin/bash
   become: true
 
+- name: Add user to www-data group
+  user:
+    name: "{{ user }}"
+    groups: www-data
+    append: yes
+
 - name: Add ssh key for new super user
   authorized_key:
     user: "{{ user }}"
