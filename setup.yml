@@ -51,7 +51,7 @@
     - name: mysql
       tags: mysql
       become: true
-      when: install_database
+      when: configure_database
 
     - name: redis
       tags: redis
