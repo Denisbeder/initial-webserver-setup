@@ -3,14 +3,20 @@
 - name: Install iptables-persistent
   become: true
   environment:
-      DEBIAN_FRONTEND: noninteractive
+    DEBIAN_FRONTEND: noninteractive
   apt:
-      pkg: iptables-persistent
-      update_cache: yes
+    name: iptables-persistent
+    state: present
+    update_cache: yes
 
 - name: Copy rules.v4
   become: true
   copy:
-      src: rules.v4
-      dest: /etc/iptables/rules.v4
+    src: rules.v4
+    dest: /etc/iptables/rules.v4
   notify: Restart iptables
+
+- name: Ensure iptables rules are applied on reboot
+  become: true
+  command: netfilter-persistent save
+  changed_when: false
