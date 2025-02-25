@@ -10,7 +10,7 @@ password: $6$PBujVyh.sHhSkkYl$6TkCt/JJX6fWCyerRsBv8wrH1TQ/KoiOWCg3l172uAxxr5N4qE
 public_key: ~/.ssh/id_ed25519.pub
 
 # Email to which letsencrypt will send notifications
-email: example@example.com
+email: duek.digital@gmail.com
 
 # Timezone to set on server
 timezone: 'America/Campo_Grande'
