@@ -43,6 +43,9 @@ nodejs_version: "22.x"
 #nodejs_npm_global_packages:
 #  - name: yarn
 
+# Set this to false if you don't want to install database.
+install_database: true
+
 # Mysql user name and password
 # More info at https://github.com/geerlingguy/ansible-role-mysql
 mysql_user_name: root
