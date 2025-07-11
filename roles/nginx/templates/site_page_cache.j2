@@ -4,6 +4,14 @@ map $args $page_param {
     ~(^|&)(page=[^&]*) $2;
 }
 
+# Block access by HOST IP
+#server {
+#    listen 80 default_server;
+#    server_name _;
+
+#    return 444;
+#}
+
 server {
     #mobile site handling as per user agent
     set $mobile_rewrite do_not_perform;
@@ -48,7 +56,7 @@ server {
         add_header x-page-cache-param $page_param;
     }
 
-    listen 80 default_server deferred;
+    listen 80 deferred;
 
     root /var/www/{{ domain }}/public;
     server_name {{ domain }};
