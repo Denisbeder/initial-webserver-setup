@@ -1,20 +1,40 @@
 ---
 
-- name: Installing UFW
+- name: Ensure UFW is installed
   apt:
     name: ufw
-    update_cache: yes
     state: latest
+    update_cache: yes
   become: true
 
-- name: Enable UFW
-  ufw: direction=incoming policy=deny state=enabled
+- name: Enable UFW firewall
+  ufw:
+    state: enabled
+  become: true
 
-- name: UFW limit SSH
-  ufw: rule=limit port=ssh
+- name: Set default policy to deny all incoming traffic
+  ufw:
+    direction: incoming
+    policy: deny
+  become: true
 
-- name: UFW open HTTP
-  ufw: rule=allow port=http
+- name: Allow SSH with rate limiting
+  ufw:
+    rule: limit
+    port: ssh
+    proto: tcp
+  become: true
 
-- name: UFW open HTTPS
-  ufw: rule=allow port=https
+- name: Allow HTTP
+  ufw:
+    rule: allow
+    port: http
+    proto: tcp
+  become: true
+
+- name: Allow HTTPS
+  ufw:
+    rule: allow
+    port: https
+    proto: tcp
+  become: true

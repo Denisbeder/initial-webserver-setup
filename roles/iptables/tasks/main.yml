@@ -1,5 +1,14 @@
 ---
 
+- name: Install netfilter-persistent
+  become: true
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  apt:
+    name: netfilter-persistent
+    state: present
+    update_cache: yes
+
 - name: Install iptables-persistent
   become: true
   environment:
