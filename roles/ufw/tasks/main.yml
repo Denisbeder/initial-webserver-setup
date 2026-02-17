@@ -15,3 +15,6 @@
 
 - name: UFW open HTTP
   ufw: rule=allow port=http
+
+- name: UFW open HTTPS
+  ufw: rule=allow port=https
