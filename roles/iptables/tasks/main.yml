@@ -9,12 +9,21 @@
     state: present
     update_cache: yes
 
+- name: Remove config residual (if exists)
+  become: true
+  apt:
+    name: iptables-persistent
+    state: absent
+    purge: yes
+
 - name: Install iptables-persistent
   become: true
   environment:
     DEBIAN_FRONTEND: noninteractive
   apt:
-    name: iptables-persistent
+    name:
+      - iptables-persistent
+      - netfilter-persistent
     state: present
     update_cache: yes
 
