@@ -89,7 +89,7 @@ By default on ubuntu 16.04 there is no python 2 and aptitude. Without those
 programs ansible cannot work. To fix it run:
 
 ```bash
-ansible-playbook initial-setup.yml
+ansible-playbook -i <IP_HOST> initial-setup.yml
 ```
 
 Beside it this playbook also creates user and configures ssh server.
@@ -99,19 +99,19 @@ Beside it this playbook also creates user and configures ssh server.
 This playbook setup nginx, php-fpm, mysql, nodejs, etc.
 
 ```bash
-ansible-playbook setup.yml
+ansible-playbook setup.yml -i <IP_HOST>, # The comma is necessary
 ```
 
 ### To run only specific roles
 
 ```bash
-ansible-playbook setup.yml --tags=user,nginx
+ansible-playbook setup.yml --tags=user,nginx -i <IP_HOST>, # The comma is necessary
 ```
 
 ### To exclude specific roles
 
 ```bash
-ansible-playbook setup.yml --skip-tags=user,nginx
+ansible-playbook setup.yml --skip-tags=user,nginx -i <IP_HOST>, # The comma is necessary
 ```
 
 ## Security
