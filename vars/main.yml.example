@@ -16,7 +16,7 @@ email: duek.digital@gmail.com
 timezone: 'America/Campo_Grande'
 
 # Domain of your site
-domain: example.com
+domain: example.com.br
 
 # Where site will be located
 domain_path: "/var/www/{{ domain }}"
@@ -95,6 +95,8 @@ php_opcache_blacklist_filename: ""
 php_enable_apc: true
 php_apc_shm_size: "96M"
 php_apc_enable_cli: "0"
+php_apc_enable: "1"
+php_apc_ttl: "3600"
 
 # PHP-FPM configuration.
 php_enable_php_fpm: true
@@ -103,6 +105,7 @@ php_fpm_handler_state: restarted
 php_fpm_enabled_on_boot: true
 php_fpm_listen: "127.0.0.1:9000"
 php_fpm_listen_allowed_clients: "127.0.0.1"
+php_fpm_pm: "ondemand"
 php_fpm_pm_max_children: 5
 php_fpm_pm_start_servers: 5
 php_fpm_pm_min_spare_servers: 5
@@ -154,7 +157,7 @@ php_fpm_pools:
     pool_template: www.conf.j2
     pool_listen: "{{ php_fpm_listen }}"
     pool_listen_allowed_clients: "{{ php_fpm_listen_allowed_clients }}"
-    pool_pm: ondemand
+    pool_pm: "{{ php_fpm_pm }}"
     pool_pm_max_children: "{{ php_fpm_pm_max_children }}"
     pool_pm_start_servers: "{{ php_fpm_pm_start_servers }}"
     pool_pm_min_spare_servers: "{{ php_fpm_pm_min_spare_servers }}"
