@@ -31,7 +31,7 @@ nginx_server: "site_page_cache.j2"
 vm_swappiness: 10
 
 # Define fs.file-max value
-#fs_file_max=20000
+#fs_file_max: 20000
 
 configure_certbot: false
 configure_ssl: false
