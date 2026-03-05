@@ -22,7 +22,7 @@ domain: example.com.br
 domain_path: "/var/www/{{ domain }}"
 
 # Define nginx config file
-nginx_config: "nginx.conf"
+nginx_config: "nginx-4core8ram.conf"
 
 # Define nginx server file
 nginx_server: "site_page_cache.j2"
@@ -31,7 +31,7 @@ nginx_server: "site_page_cache.j2"
 vm_swappiness: 10
 
 # Define fs.file-max value
-#fs_file_max=20000
+fs_file_max=20000
 
 configure_certbot: false
 configure_ssl: false
@@ -78,6 +78,20 @@ mysql_users:
     password: secret
     priv: "site.*:ALL"
 
+
+# Mysql FineTune Configs
+mysql_innodb_buffer_pool_size: "2G"
+mysql_innodb_buffer_pool_instances: "2"
+mysql_innodb_log_file_size: "512M"
+mysql_innodb_flush_log_at_trx_commit: "2"
+mysql_innodb_flush_method: "O_DIRECT"
+mysql_max_connections: "120"
+mysql_tmp_table_size: "128M"
+mysql_max_heap_table_size: "128M"
+mysql_table_open_cache: "4000"
+mysql_table_definition_cache: "4000"
+mysql_query_cache_size: "0"
+
 # Set up PHP version
 php_version: 7.4
 
@@ -89,23 +103,23 @@ php_fpm_pool_conf_path: "{{ php_fpm_conf_path }}/pool.d/www.conf"
 # OpCache settings.
 php_opcache_zend_extension: "opcache.so"
 php_opcache_enable: "1"
-php_opcache_enable_cli: "0"
-php_opcache_memory_consumption: "96"
+php_opcache_enable_cli: "1"
+php_opcache_memory_consumption: "256"
 php_opcache_interned_strings_buffer: "16"
-php_opcache_max_accelerated_files: "4096"
+php_opcache_max_accelerated_files: "20000"
 php_opcache_max_wasted_percentage: "5"
-php_opcache_validate_timestamps: "1"
+php_opcache_validate_timestamps: "0"
 php_opcache_revalidate_path: "0"
-php_opcache_revalidate_freq: "2"
+php_opcache_revalidate_freq: "0"
 php_opcache_max_file_size: "0"
 php_opcache_blacklist_filename: ""
 
 # APCu settings.
 php_enable_apc: true
-php_apc_shm_size: "96M"
-php_apc_enable_cli: "0"
+php_apc_shm_size: "128M"
+php_apc_enable_cli: "1"
 php_apc_enable: "1"
-php_apc_ttl: "3600"
+php_apc_ttl: "7200"
 
 # PHP-FPM configuration.
 php_enable_php_fpm: true
@@ -114,12 +128,12 @@ php_fpm_handler_state: restarted
 php_fpm_enabled_on_boot: true
 php_fpm_listen: "127.0.0.1:9000"
 php_fpm_listen_allowed_clients: "127.0.0.1"
-php_fpm_pm: "ondemand"
-php_fpm_pm_max_children: 5
-php_fpm_pm_start_servers: 5
-php_fpm_pm_min_spare_servers: 5
-php_fpm_pm_max_spare_servers: 5
-php_fpm_pm_max_requests: 200
+php_fpm_pm: "dynamic"
+php_fpm_pm_max_children: 25
+php_fpm_pm_start_servers: 6
+php_fpm_pm_min_spare_servers: 4
+php_fpm_pm_max_spare_servers: 8
+php_fpm_pm_max_requests: 400
 php_fpm_pm_status_path: ""
 php_process_idle_timeout: "2s"
 
@@ -132,7 +146,8 @@ php_memory_limit: "256M"
 php_max_execution_time: "60"
 php_max_input_time: "60"
 php_max_input_vars: "1000"
-php_realpath_cache_size: "32K"
+php_realpath_cache_size: "4096K"
+php_realpath_cache_ttl: "600"
 
 php_file_uploads: "On"
 php_upload_max_filesize: "100M"
@@ -188,3 +203,11 @@ php_extension_conf_paths:
 
 php_fpm_pool_user: www-data
 php_fpm_pool_group: www-data
+
+# Redis Configs
+redis_save: ""
+redis_appendonly: "yes"
+redis_appendfsync: "everysec"
+redis_maxmemory: 1536mb
+redis_maxmemory_policy: "noeviction"
+redis_tcp_keepalive: 60

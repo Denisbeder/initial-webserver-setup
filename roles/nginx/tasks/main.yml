@@ -28,7 +28,7 @@
 
 - name: Add nginx config
   copy:
-    src: nginx.conf
+    src: "{{ nginx_config }}"
     dest: /etc/nginx/nginx.conf
     owner: root
     group: root
@@ -57,7 +57,7 @@
 
 - name: Copy site configs
   template:
-    src: "{{ nginx_config }}"
+    src: "{{ nginx_server }}"
     dest: "/etc/nginx/sites-available/{{ domain }}"
     owner: root
     group: root

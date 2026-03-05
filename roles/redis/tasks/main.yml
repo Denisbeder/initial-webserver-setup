@@ -27,13 +27,21 @@
     state: present
     reload: yes
 
-- name: Ensure vm.swappiness is set to 1
+- name: Set vm.swappiness
   sysctl:
     name: vm.swappiness
-    value: 1
+    value: "{{ vm_swappiness }}"
     sysctl_set: yes
     state: present
     reload: yes
+
+- name: Set fs.file-max
+  sysctl:
+    name: fs.file-max
+    value: "{{ fs_file_max }}"
+    state: present
+    reload: yes
+  when: fs_file_max is defined
 
 - name: Ensure Redis is running and enabled on boot.
   service: "name={{ redis_daemon }} state=started enabled=yes"
