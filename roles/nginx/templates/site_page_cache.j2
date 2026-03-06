@@ -56,16 +56,16 @@ server {
         add_header x-page-cache-param $page_param;
     }
 
-    listen 80 deferred;
+    listen 80;
 
-    root /var/www/{{ domain }}/public;
-    server_name {{ domain }};
+    root /var/www/{{ item }}/public;
+    server_name {{ item }};
     index index.html index.htm index.php;
 
     charset utf-8;
 
-    access_log /var/log/nginx/{{ domain }}.log;
-    error_log  /var/log/nginx/{{ domain }}-error.log error;
+    access_log /var/log/nginx/{{ item }}.log;
+    error_log  /var/log/nginx/{{ item }}-error.log error;
 
     location = /favicon.ico { log_not_found off; access_log off; }
     location = /robots.txt  { log_not_found off; access_log off; }

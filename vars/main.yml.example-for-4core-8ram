@@ -15,11 +15,9 @@ email: duek.digital@gmail.com
 # Timezone to set on server
 timezone: 'America/Campo_Grande'
 
-# Domain of your site
-domain: example.com.br
-
-# Where site will be located
-domain_path: "/var/www/{{ domain }}"
+# Domains
+domains:
+  - example.com.br
 
 # Define nginx config file
 nginx_config: "nginx-4core8ram.conf"

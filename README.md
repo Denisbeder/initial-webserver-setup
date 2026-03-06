@@ -31,7 +31,7 @@ to login only user created on previous step
 - install php and composer
 - install mysql
 - creates following folders structure
-  - `/var/www/domain.com`:
+  - `/var/www/example.com`:
 
 ## Install
 
@@ -100,6 +100,12 @@ This playbook setup nginx, php-fpm, mysql, nodejs, etc.
 
 ```bash
 ansible-playbook setup.yml -i <IP_HOST>, # The comma is necessary
+```
+
+One line command
+
+```bash
+export VPS_IP=127.0.0.1 && ansible-playbook -i "$VPS_IP," initial-setup.yml && ansible-playbook -i "$VPS_IP," setup.yml
 ```
 
 ### To run only specific roles

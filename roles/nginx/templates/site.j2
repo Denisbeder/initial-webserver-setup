@@ -1,27 +1,27 @@
 #server {
 #    listen 80 deferred;
-#    server_name {{ domain }};
-#    return 301 https://{{ domain }}$request_uri;
+#    server_name {{ item }};
+#    return 301 https://{{ item }}$request_uri;
 #}
 
 server {
-      #listen 443 deferred ssl;
-      listen 80 deferred;
+      #listen 443 ssl;
+      listen 80;
 
-      root /var/www/{{ domain }}/public;
-      server_name {{ domain }};
+      root /var/www/{{ item }}/public;
+      server_name {{ item }};
       index index.php;
 
-      access_log /var/log/nginx/{{ domain }}.log;
-      error_log  /var/log/nginx/{{ domain }}-error.log error;
+      access_log /var/log/nginx/{{ item }}.log;
+      error_log  /var/log/nginx/{{ item }}-error.log error;
 
       charset utf-8;
 
       include h5bp/basic.conf;
 
-      #ssl_certificate           /etc/letsencrypt/live/{{ domain }}/fullchain.pem;
-      #ssl_trusted_certificate   /etc/letsencrypt/live/{{ domain }}/fullchain.pem;
-      #ssl_certificate_key       /etc/letsencrypt/live/{{ domain }}/privkey.pem;
+      #ssl_certificate           /etc/letsencrypt/live/{{ item }}/fullchain.pem;
+      #ssl_trusted_certificate   /etc/letsencrypt/live/{{ item }}/fullchain.pem;
+      #ssl_certificate_key       /etc/letsencrypt/live/{{ item }}/privkey.pem;
       #include h5bp/directive-only/ssl.conf;
 
       client_max_body_size 100M;

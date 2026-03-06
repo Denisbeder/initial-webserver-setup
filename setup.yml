@@ -58,12 +58,13 @@
       become: true
 
   tasks:
-    - name: Create base directory
+    - name: Create base directories
       file:
-        path: "{{ domain_path }}"
+        path: "/var/www/{{ item }}"
         state: directory
         owner: "{{ user }}"
         group: "{{ user }}"
         mode: 0711
       become: true
+      loop: "{{ domains }}"
       tags: setup_deploy

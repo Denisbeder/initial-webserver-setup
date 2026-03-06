@@ -1,3 +1,4 @@
 ---
 
-domain: example.com
+domains:
+  - example.com

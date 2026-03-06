@@ -58,13 +58,14 @@
 - name: Copy site configs
   template:
     src: "{{ nginx_server }}"
-    dest: "/etc/nginx/sites-available/{{ domain }}"
+    dest: "/etc/nginx/sites-available/{{ item }}"
     owner: root
     group: root
     validate: bash -c 'echo "events { worker_connections 2; } http { include %s; }" > /etc/nginx/nginx-validate.conf; sudo nginx -T -c /etc/nginx/nginx-validate.conf; ec=$?; rm -f /etc/nginx/nginx-validate.conf; exit $ec'
   become: true
   notify:
     - Reload nginx
+  loop: "{{ domains }}"
 
 - name: Find all sites on remote
   find:
