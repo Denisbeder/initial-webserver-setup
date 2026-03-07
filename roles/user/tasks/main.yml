@@ -32,8 +32,9 @@
     groups: www-data
     append: yes
 
-- name: Add ssh key for new super user
-  authorized_key:
-    user: "{{ user }}"
-    key: "{{ lookup('file', public_key) }}"
+- name: Add root authorized keys to devops user
   become: true
+  authorized_key:
+    user: devops
+    state: present
+    key: "{{ lookup('file', '/root/.ssh/authorized_keys') }}"
