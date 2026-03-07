@@ -53,21 +53,16 @@ nodejs_version: "22.x"
 # Set this to false if you don't want to install database.
 install_database: true
 
-# Mysql user name and password
-# More info at https://github.com/geerlingguy/ansible-role-mysql
-mysql_user_name: root
-mysql_user_password: root
-
 # Mysql root user name and password
 mysql_root_username: root
-mysql_root_password: root
+mysql_root_password: 351szLxak36C
 
 # Databases to create in mysql.
 mysql_databases:
   - name: site
     collation: utf8mb4_unicode_ci
     encoding: utf8mb4
-    #replicate: 1
+    replicate: 0
 
 # Users to create in mysql.
 mysql_users:
