@@ -40,3 +40,22 @@
     state: present
   become: true
   notify: Restart ssh
+
+- name: Configure SSH keepalive settings
+  become: true
+  block:
+    - name: Set ClientAliveInterval
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?ClientAliveInterval'
+        line: 'ClientAliveInterval 60'
+        state: present
+        backrefs: yes
+    - name: Set ClientAliveCountMax
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?ClientAliveCountMax'
+        line: 'ClientAliveCountMax 10'
+        state: present
+        backrefs: yes
+  notify: Restart ssh
