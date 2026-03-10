@@ -13,6 +13,11 @@ map $args $page_param {
 #}
 
 server {
+    # Block access by HOST IP by site
+    if ($host ~* "^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$") {
+        return 444;
+    }
+
     #mobile site handling as per user agent
     set $mobile_rewrite do_not_perform;
 

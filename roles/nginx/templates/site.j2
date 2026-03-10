@@ -5,40 +5,45 @@
 #}
 
 server {
-      #listen 443 ssl;
-      listen 80;
+    # Block access by HOST IP by site
+    if ($host ~* "^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$") {
+        return 444;
+    }
 
-      root /var/www/{{ item }}/public;
-      server_name {{ item }};
-      index index.php;
+    #listen 443 ssl;
+    listen 80;
 
-      access_log /var/log/nginx/{{ item }}.log;
-      error_log  /var/log/nginx/{{ item }}-error.log error;
+    root /var/www/{{ item }}/public;
+    server_name {{ item }};
+    index index.php;
 
-      charset utf-8;
+    access_log /var/log/nginx/{{ item }}.log;
+    error_log  /var/log/nginx/{{ item }}-error.log error;
 
-      include h5bp/basic.conf;
+    charset utf-8;
 
-      #ssl_certificate           /etc/letsencrypt/live/{{ item }}/fullchain.pem;
-      #ssl_trusted_certificate   /etc/letsencrypt/live/{{ item }}/fullchain.pem;
-      #ssl_certificate_key       /etc/letsencrypt/live/{{ item }}/privkey.pem;
-      #include h5bp/directive-only/ssl.conf;
+    include h5bp/basic.conf;
 
-      client_max_body_size 100M;
-      large_client_header_buffers 16 512k;
-      fastcgi_busy_buffers_size 512k;
-      fastcgi_buffer_size 512k;
-      fastcgi_buffers 16 512k;
+    #ssl_certificate           /etc/letsencrypt/live/{{ item }}/fullchain.pem;
+    #ssl_trusted_certificate   /etc/letsencrypt/live/{{ item }}/fullchain.pem;
+    #ssl_certificate_key       /etc/letsencrypt/live/{{ item }}/privkey.pem;
+    #include h5bp/directive-only/ssl.conf;
 
-      location / {
-          try_files $uri $uri/ /index.php$is_args$args;
-      }
+    client_max_body_size 100M;
+    large_client_header_buffers 16 512k;
+    fastcgi_busy_buffers_size 512k;
+    fastcgi_buffer_size 512k;
+    fastcgi_buffers 16 512k;
 
-      location ~ \.php$ {
-          fastcgi_split_path_info ^(.+\.php)(/.+)$;
-          fastcgi_pass 127.0.0.1:9000;
-          fastcgi_index index.php;
-          fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-          include fastcgi_params;
-      }
+    location / {
+        try_files $uri $uri/ /index.php$is_args$args;
+    }
+
+    location ~ \.php$ {
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass 127.0.0.1:9000;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
 }

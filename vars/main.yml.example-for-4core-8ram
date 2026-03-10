@@ -122,13 +122,13 @@ php_fpm_enabled_on_boot: true
 php_fpm_listen: "127.0.0.1:9000"
 php_fpm_listen_allowed_clients: "127.0.0.1"
 php_fpm_pm: "dynamic"
-php_fpm_pm_max_children: 25
-php_fpm_pm_start_servers: 6
-php_fpm_pm_min_spare_servers: 4
-php_fpm_pm_max_spare_servers: 8
-php_fpm_pm_max_requests: 400
+php_fpm_pm_max_children: 80
+php_fpm_pm_start_servers: 12
+php_fpm_pm_min_spare_servers: 8
+php_fpm_pm_max_spare_servers: 20
+php_fpm_pm_max_requests: 500
 php_fpm_pm_status_path: ""
-php_process_idle_timeout: "2s"
+php_process_idle_timeout: "10s"
 
 # If this is set to false, none of the following options will have any effect.
 # Any and all changes to /etc/php.ini will be your responsibility.

@@ -114,7 +114,7 @@ php_fpm_pm_min_spare_servers: 5
 php_fpm_pm_max_spare_servers: 5
 php_fpm_pm_max_requests: 200
 php_fpm_pm_status_path: ""
-php_process_idle_timeout: "2s"
+php_process_idle_timeout: "10s"
 
 # If this is set to false, none of the following options will have any effect.
 # Any and all changes to /etc/php.ini will be your responsibility.
