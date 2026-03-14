@@ -6,7 +6,6 @@ SUPERVISOR_DIR="/etc/supervisor/conf.d"
 CRON_FILE="/etc/cron.d/laravel-scheduler"
 
 RUN_USER="www-data"
-QUEUE_CONNECTION="redis"
 WORKER_COUNT=2
 
 echo "Updating packages..."
@@ -41,7 +40,7 @@ for CONFIG in ${NGINX_SITES_DIR}/*; do
 [program:${SITE_NAME}-worker]
 process_name=%(program_name)s_%(process_num)02d
 directory=${APP_DIR}
-command=php artisan queue:work ${QUEUE_CONNECTION} --sleep=3 --tries=3 --timeout=90 --memory=128
+command=php artisan queue:work --sleep=3 --tries=3 --timeout=90 --memory=128
 autostart=true
 autorestart=true
 user=${RUN_USER}
